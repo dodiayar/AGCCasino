@@ -1,10 +1,11 @@
 import mysql from 'mysql'
+import 'dotenv/config'
 
 export function connect() {
 	return mysql.createConnection({
-		host: '127.0.0.1',
-		user: 'root',
-		password: '',
-		database: 'agc_login',
+		host: process.env.USERDB_HOST,
+		user: process.env.USERDB_USER,
+		password: process.env.USERDB_PASS,
+		database: process.env.USERDB_DBNAME,
 	})
 }
