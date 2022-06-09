@@ -22,50 +22,52 @@ export class RPS extends Table {
 	private _playerBet: Bet
 
 	public playerJoined(username: string, socket: Socket, io: Server) {
-		if (this.player !== '') {
-			io.to(socket.id).emit('player2', this.player)
-			io.to(socket.id).emit('readyOpen')
-		}
-
-		if (this._creatorReady) {
-			io.to(socket.id).emit('ready', 'player1')
-		}
-
-		if (this._playerReady) {
-			io.to(socket.id).emit('ready', 'player2')
-		}
-
-		if (this._creatorReady && this._playerReady) {
-			io.to(socket.id).emit('decisionsActive')
-		}
-
-		if (this._creatorDecision != null) {
-			io.to(socket.id).emit('player1MadeDecision')
-			if (this.creator == username) {
-				io.to(socket.id).emit('existingDecision', this._creatorDecision)
+		setTimeout(() => {
+			if (this.player !== '') {
+				io.to(socket.id).emit('player2', this.player)
+				io.to(socket.id).emit('readyOpen')
 			}
-		}
 
-		if (this._playerDecision != null) {
-			io.to(socket.id).emit('player2MadeDecision')
-			if (this.player == username) {
-				io.to(socket.id).emit('existingDecision', this._playerDecision)
+			if (this._creatorReady) {
+				io.to(socket.id).emit('ready', 'player1')
 			}
-		}
 
-		if (this._creatorDecision != null && this._playerDecision != null) {
-			io.to(socket.id).emit('result', {
-				winner:
-					this.gameLogic() == 'won'
-						? 'player1'
-						: this.gameLogic() == 'lost'
-						? 'player2'
-						: 'tied',
-				result: this._creatorBet.result,
-				player1Decision: this._creatorDecision,
-				player2Decision: this._playerDecision,
-			})
-		}
+			if (this._playerReady) {
+				io.to(socket.id).emit('ready', 'player2')
+			}
+
+			if (this._creatorReady && this._playerReady) {
+				io.to(socket.id).emit('decisionsActive')
+			}
+
+			if (this._creatorDecision != null) {
+				io.to(socket.id).emit('player1MadeDecision')
+				if (this.creator == username) {
+					io.to(socket.id).emit('existingDecision', this._creatorDecision)
+				}
+			}
+
+			if (this._playerDecision != null) {
+				io.to(socket.id).emit('player2MadeDecision')
+				if (this.player == username) {
+					io.to(socket.id).emit('existingDecision', this._playerDecision)
+				}
+			}
+
+			if (this._creatorDecision != null && this._playerDecision != null) {
+				io.to(socket.id).emit('result', {
+					winner:
+						this.gameLogic() == 'won'
+							? 'player1'
+							: this.gameLogic() == 'lost'
+							? 'player2'
+							: 'tied',
+					result: this._creatorBet.result,
+					player1Decision: this._creatorDecision,
+					player2Decision: this._playerDecision,
+				})
+			}
+		}, 200)
 	}
 
 	public playerDisconnected(_username: string, _io: Server) {}
@@ -80,7 +82,7 @@ export class RPS extends Table {
 			if (balance.balance - this.bet < 0) {
 				io.to(this.name).emit(
 					'fatalPlayer1',
-					'Not Enough Balance. Redeposit To Continue The Thrill'
+					'Not Enough Balance. Re-Deposit To Continue The Thrill!'
 				)
 				return
 			}
@@ -105,7 +107,7 @@ export class RPS extends Table {
 			if (balance.balance - this.bet < 0) {
 				io.to(this.name).emit(
 					'fatalPlayer2',
-					'Not Enough Balance. Redeposit To Continue The Thrill!'
+					'Not Enough Balance. Re-Deposit To Continue The Thrill!'
 				)
 				return
 			}
@@ -144,6 +146,21 @@ export class RPS extends Table {
 
 		if (this._creatorDecision != null && this._playerDecision != null)
 			this.conclude(this.gameLogic(), io)
+	}
+
+	public deleteTable(username: string, io: Server) {
+		if (
+			username == this.creator &&
+			!this._creatorReady &&
+			!this._playerReady
+		) {
+			io.to(this.name).emit('tableDeleted')
+			consola.info(
+				`Table ${chalk.blueBright(this.name)} has been ${chalk.redBright(
+					'deleted'
+				)}`
+			)
+		}
 	}
 
 	public async conclude(creatorBet: 'won' | 'lost' | 'tied', io: Server) {
@@ -260,15 +277,5 @@ export class RPS extends Table {
 				else return 'won'
 		}
 		return 'tied'
-	}
-
-	public deleteTable(username: string, io: Server) {
-		if (
-			username == this.creator &&
-			!this._creatorReady &&
-			!this._playerReady
-		) {
-			io.to(this.name).emit('tableDeleted')
-		}
 	}
 }

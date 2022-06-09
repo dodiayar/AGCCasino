@@ -18,8 +18,8 @@ export function onRPSSit(io: Server, socket: Socket, data: any) {
 	table.addPlayer(json.username)
 	if (table.playerCount == 2) {
 		;(<RPS>table).player = json.username
-		io.to(table.name).emit('readyOpen')
 		io.to(table.name).emit('player2', json.username)
+		io.to(table.name).emit('readyOpen')
 	}
 
 	consola.info(

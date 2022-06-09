@@ -5,9 +5,9 @@ import { RPS } from '../games/rps'
 
 export function onRPSDeleteTable(io: Server, socket: Socket, data: any) {
 	const json = JSON.parse(data)
-	console.log(json)
-	const table = Tables.findTable(json.tableName)
+	const table = Tables.findTable(json.table) as RPS
 
 	checkLoggedIn(socket, json)
-	;(table as RPS).deleteTable(json.username, io)
+	table.deleteTable(json.username, io)
+	Tables.removeTable(table.name)
 }
