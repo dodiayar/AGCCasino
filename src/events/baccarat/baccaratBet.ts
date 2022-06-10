@@ -2,8 +2,6 @@ import { Server, Socket } from 'socket.io'
 import { checkLoggedIn } from '../../utils/checkLoggedIn'
 import { Tables } from '../../table/tables'
 import { Baccarat } from '../../games/baccarat'
-import chalk from 'chalk'
-import consola from 'consola'
 
 export function onBaccaratBet(io: Server, socket: Socket, data: any) {
 	const json = JSON.parse(data)
