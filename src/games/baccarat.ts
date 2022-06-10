@@ -198,7 +198,7 @@ export class Baccarat extends Table {
 						where: { username: singleBet.username },
 					})
 					balance.balance += singleBet.result
-					balance.save()
+					await balance.save()
 				}
 			} else if (bet == winnerBet) {
 				const array = this._bets.get(bet)
@@ -215,7 +215,7 @@ export class Baccarat extends Table {
 						where: { username: singleBet.username },
 					})
 					balance.balance += singleBet.result
-					balance.save()
+					await balance.save()
 				}
 			} else {
 				const array = this._bets.get(bet)
