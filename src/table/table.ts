@@ -24,4 +24,8 @@ export class Table {
 		this.players = this.players.filter((el) => player !== el)
 		this.playerCount--
 	}
+
+	public toJSON(): Object {
+		return {}
+	}
 }

@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io'
-import { checkLoggedIn } from '../utils/checkLoggedIn'
-import { Tables } from '../table/tables'
-import { RPS } from '../games/rps'
+import { checkLoggedIn } from '../../utils/checkLoggedIn'
+import { Tables } from '../../table/tables'
+import { RPS } from '../../games/rps'
 import chalk from 'chalk'
 import consola from 'consola'
 

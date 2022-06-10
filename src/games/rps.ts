@@ -278,4 +278,20 @@ export class RPS extends Table {
 		}
 		return 'tied'
 	}
+
+	public toJSON() {
+		return {
+			name: this.name,
+			game: this.game,
+			maxPlayers: this.maxPlayers,
+			playerCount: this.playerCount,
+			players: this.players,
+			rake: this.rake,
+			creator: this.creator,
+			player: this.player,
+			status: this.status,
+			isPrivate: this.isPrivate,
+			bet: this.bet,
+		}
+	}
 }

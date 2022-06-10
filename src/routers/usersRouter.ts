@@ -27,7 +27,6 @@ router.post('/login', async (req, res) => {
 			? res.send({ success: 'Logged in' })
 			: res.status(400).send({ error: 'Username or password is incorrect' })
 	} catch (error) {
-		console.error(error)
 		res.status(400).send({ error })
 	}
 })

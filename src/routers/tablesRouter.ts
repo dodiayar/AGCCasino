@@ -11,12 +11,13 @@ import chalk from 'chalk'
 const router = Router()
 
 router.get('/tables', (_, res) => {
-	let tables: Map<string, Table[]> = new Map()
+	let tables: Map<string, Object[]> = new Map()
 	for (let game of games) {
-		tables.set(
-			game,
-			Tables.getTables().filter((el) => el.game === game)
-		)
+		let tableArrays: Array<Object> = []
+		Tables.getTables()
+			.filter((el) => el.game === game)
+			.map((table) => tableArrays.push(table.toJSON()))
+		tables.set(game, tableArrays)
 	}
 	res.send(Object.fromEntries(tables))
 })

@@ -18,6 +18,7 @@ export function onJoin(io: Server, socket: Socket, data: any) {
 				json.tableName
 			)}`
 		)
+		return
 	}
 	socket.join(json.tableName)
 	socket.data = json

@@ -1,3 +1,3 @@
-export type IGames = 'blackjack' | 'rps'
+export const games = ['blackjack', 'rps', 'baccarat'] as const
 
-export const games = ['blackjack', 'rps']
+export type IGames = typeof games[number]
