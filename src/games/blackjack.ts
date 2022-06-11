@@ -13,7 +13,7 @@ export class Blackjack extends Table {
 		this.maxBet = maxBet
 	}
 
-	public sit(username: string, position: number, io: Server) {
+	public sit(_username: string, _position: number, _io: Server) {
 		this._players
 	}
 
