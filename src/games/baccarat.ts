@@ -199,6 +199,13 @@ export class Baccarat extends Table {
 					})
 					balance.balance += singleBet.result
 					await balance.save()
+					consola.success(
+						`Player ${singleBet.username} ${chalk.gray(
+							'tied'
+						)} ${chalk.greenBright(
+							singleBet.result + '₺'
+						)} on baccarat table ${chalk.blueBright(this.name)} to ${bet}`
+					)
 				}
 			} else if (bet == winnerBet) {
 				const array = this._bets.get(bet)
@@ -216,6 +223,13 @@ export class Baccarat extends Table {
 					})
 					balance.balance += singleBet.result
 					await balance.save()
+					consola.success(
+						`Player ${singleBet.username} ${chalk.green(
+							'won'
+						)} ${chalk.greenBright(
+							singleBet.result + '₺'
+						)} on baccarat table ${chalk.blueBright(this.name)} to ${bet}`
+					)
 				}
 			} else {
 				const array = this._bets.get(bet)
@@ -224,6 +238,13 @@ export class Baccarat extends Table {
 					singleBet.result = 0
 					singleBet.status = 'Finished'
 					singleBet.save()
+					consola.success(
+						`Player ${singleBet.username} ${chalk.redBright(
+							'lost'
+						)} ${chalk.greenBright(
+							singleBet.result + '₺'
+						)} on baccarat table ${chalk.blueBright(this.name)} to ${bet}`
+					)
 				}
 			}
 		}
@@ -277,6 +298,7 @@ export class Baccarat extends Table {
 		)
 
 		io.to(socket.id).emit('myBet', {
+			id: myBet.id,
 			bet,
 			amount,
 		})

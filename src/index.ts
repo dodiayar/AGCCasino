@@ -11,6 +11,7 @@ import { Tables } from './table/tables'
 import { createConnection } from 'typeorm'
 import consola from 'consola'
 import { Baccarat } from './games/baccarat'
+import { Blackjack } from './games/blackjack'
 
 const app = express()
 
@@ -49,3 +50,5 @@ baccaratTables[2].maxBet = 100
 for (let table of baccaratTables) {
 	Tables.addTable(table)
 }
+
+Tables.addTable(new Blackjack('Blackjack 1', 0.5, 5))
